@@ -53,6 +53,39 @@ module Slang
         end
       end
 
+      def to_html(str)
+        str << "\n" unless str.empty?
+        str << "#{indentation}" if indent?
+        str << "<#{name}"
+        str << " id=\"#{id}\"" if id
+        c_names = generate_class_names
+        if c_names && c_names != ""
+          str << " class"
+          str << "=\""
+          str << "#{c_names}"
+          str << "\""
+        end
+        attributes.each do |name, value|
+          # any other attribute value.
+          str << "=\""
+          str << "#{value}"
+          str << "\""
+        end
+        str << ">"
+        if children?
+          nodes.each do |node|
+            node.to_html(str)
+          end
+        end
+        if !self_closing?
+          if children? && !only_inline_children?
+            str << "\n"
+            str << "#{indentation}" if indent?
+          end
+          str << "</#{name}>"
+        end
+      end
+
       def only_inline_children?
         nodes.all? { |n| n.inline }
       end

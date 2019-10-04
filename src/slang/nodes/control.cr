@@ -81,6 +81,19 @@ module Slang
         end
         str << "end\n" if endable?
       end
+
+      def to_html(str)
+        if children?
+          nodes.each do |node|
+            node.to_html(str)
+          end
+        end
+        if branches?
+          branches.each do |branch|
+            branch.to_html(str)
+          end
+        end
+      end
     end
   end
 end

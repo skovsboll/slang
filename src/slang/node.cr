@@ -49,6 +49,12 @@ module Slang
         node.to_s(str, buffer_name)
       end
     end
+
+    def to_html(str)
+      nodes.each do |node|
+        node.to_html(str)
+      end
+    end
   end
 end
 

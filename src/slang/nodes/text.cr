@@ -41,6 +41,37 @@ module Slang
           end
         end
       end
+
+      def to_html(str)
+        str << "\n" unless str.empty? || inline
+        str << "#{indentation}\n" if indent?
+
+        # # Escaping.
+        # if escaped && parent.allow_children_to_escape?
+        #   str << "HTML.escape("
+        # end
+
+        # This is an output (code) token and has children
+        if token.type == :OUTPUT && children?
+          nodes.each do |node|
+            node.to_html(str)
+          end
+        else
+          str << value.to_s.strip("\"")
+        end
+
+        # escaping, need to close HTML.escape
+        # if escaped && parent.allow_children_to_escape?
+        #   str << ".to_s)"
+        # end
+        # str << ".to_s(#{buffer_name})\n"
+
+        # if children?
+        #   nodes.each do |node|
+        #     node.to_html(str)
+        #   end
+        # end
+      end
     end
   end
 end
